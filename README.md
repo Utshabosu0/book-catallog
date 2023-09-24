@@ -1,4 +1,3 @@
-Live Link: https://book-catalog-prisma-nine.vercel.app/
 
 Application Routes:
 
