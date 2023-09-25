@@ -61,5 +61,5 @@ model ReviewAndRating {
     bookId String
     book   Book   @relation(fields: [bookId], references: [id])
 
-    @@map("reviewAndRatings")
+    @@map("reviewAndRating")
 }
