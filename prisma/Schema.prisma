@@ -20,8 +20,10 @@ model User {
     address    String
     profileImg String
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt        DateTime          @default(now())
+    updatedAt        DateTime          @updatedAt
+    reviewAndRatings ReviewAndRating[]
+    orders           Order[]
 
     @@map("users")
 }
@@ -43,12 +45,21 @@ model Book {
     publicationDate String
     categoryId      String
 
-    category Category @relation(fields: [categoryId], references: [id])
+    category         Category          @relation(fields: [categoryId], references: [id])
+    reviewAndRatings ReviewAndRating[]
 
     @@map("books")
 }
 
-enum UserEmail {
-    admin
-    customer
+model ReviewAndRating {
+    id     String @id @default(uuid())
+    review String
+    rating String
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
+
+    bookId String
+    book   Book   @relation(fields: [bookId], references: [id])
+
+    @@map("reviewAndRatings")
 }
