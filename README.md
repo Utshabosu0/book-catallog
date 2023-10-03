@@ -1,5 +1,4 @@
-
-Application Routes:
+https://book-catalog-prisma-nine.vercel.app/
 
 ## Auth
 api/v1/auth/signup (POST)
