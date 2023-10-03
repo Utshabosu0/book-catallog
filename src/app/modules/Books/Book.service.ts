@@ -1,9 +1,9 @@
-import { Book, Prisma } from '@prisma/client';
 import prisma from '../../../shared/prisma';
 import { IGenericResponse } from '../../../interfaces/common';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import { IBookFilters } from './Book.interface';
+import { Book, Prisma } from '@prisma/client';
 
 const insertIntoDB = async (data: Book): Promise<Book | null> => {
   const result = await prisma.book.create({
@@ -39,7 +39,7 @@ const getAllBookFromDB = async (
   if (minPrice !== undefined) {
     andConditions.push({
       price: {
-        gte:minPrice,
+        gte: minPrice,
       },
     });
   }
@@ -101,37 +101,38 @@ const getAllBookFromDB = async (
   };
 };
 
-const getBooksByCategoryId = async (categoryId: string,
-  options: IPaginationOptions): Promise<IGenericResponse<Book[]>> => {
-
-
+const getBooksByCategoryId = async (
+  categoryId: string,
+  options: IPaginationOptions
+): Promise<IGenericResponse<Book[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
 
-
   const result = await prisma.book.findMany({
-       where: {
-            category: {
-
-                 id: categoryId
-            }
-       },
-       skip,
-       take: limit,
-       orderBy: options.sortBy && options.sortOrder ? { [options.sortBy]: options.sortOrder } : {
-            price: 'desc'
-       },
-       include: {
-            category: true
-       }
-  })
+    where: {
+      category: {
+        id: categoryId,
+      },
+    },
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? { [options.sortBy]: options.sortOrder }
+        : {
+            price: 'desc',
+          },
+    include: {
+      category: true,
+    },
+  });
 
   const total = await prisma.book.count({
-       where: {
-            category: {
-                 id: categoryId
-            }
-       }
-  })
+    where: {
+      category: {
+        id: categoryId,
+      },
+    },
+  });
 
   const totalPage = Math.ceil(total / limit);
 
